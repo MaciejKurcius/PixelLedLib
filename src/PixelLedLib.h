@@ -22,6 +22,7 @@ class PixelLedClass {
     public:
         PixelLedClass();
         PixelLedClass(uint8_t StripLength_);
+        PixelLedClass(uint8_t StripLength_, uint8_t VirtualLedLength_);
         ~PixelLedClass();
         uint8_t Init();
         void SendStartFrame();
@@ -39,12 +40,15 @@ class PixelLedClass {
         void PixelStripMapInit();
         bool PixelStripMapRemap(uint8_t MapIndex_, uint8_t LedIndex_);
         bool PixelStripMapSwap(uint8_t LedIndex1_, uint8_t LedIndex2_);
+        bool SetNthLedAsVirtual(uint8_t Led_);
+        bool SetLedsAsVirtual(uint8_t* Leds_, uint8_t Size_);
     private:
         uint8_t StripLength;
         uint8_t* Red;
         uint8_t* Green;
         uint8_t* Blue;
         uint8_t* Brightness;
+        bool* VirtualPtr;
         std::map<uint8_t, uint8_t>PixelStripMap;
     protected:
     ;

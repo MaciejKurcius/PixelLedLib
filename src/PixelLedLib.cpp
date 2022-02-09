@@ -32,6 +32,23 @@ PixelLedClass::PixelLedClass(uint8_t StripLength_){
     Green = new uint8_t[StripLength_];
     Blue = new uint8_t[StripLength_];
     Brightness = new uint8_t [StripLength_];
+    VirtualPtr = new bool [StripLength_];
+    PixelStripMapInit();
+}
+
+/**
+ * @brief Construct a new Pixel Led Class:: Pixel Led Class object
+ * 
+ * @param StripLength_ 
+ * @param VirtualLedLength_ 
+ */
+PixelLedClass::PixelLedClass(uint8_t StripLength_, uint8_t VirtualLedLength_){
+    StripLength = StripLength_ + VirtualLedLength_;
+    Red = new uint8_t[StripLength_ + VirtualLedLength_];
+    Green = new uint8_t[StripLength_ + VirtualLedLength_];
+    Blue = new uint8_t[StripLength_ + VirtualLedLength_];
+    Brightness = new uint8_t [StripLength_ + VirtualLedLength_];
+    VirtualPtr = new bool [StripLength_ + VirtualLedLength_];
     PixelStripMapInit();
 }
 
@@ -78,10 +95,12 @@ void PixelLedClass::SendStopFrame(){
 void PixelLedClass::SendBuffersData(){
     this->SendStartFrame();
     for(int i = 0; i < StripLength; i++){
-        PixelSpiTransferData(Brightness[i] | 0xE0);
-        PixelSpiTransferData(Blue[i]);
-        PixelSpiTransferData(Green[i]);
-        PixelSpiTransferData(Red[i]);
+        if(VirtualPtr[i] == false){
+            PixelSpiTransferData(Brightness[i] | 0xE0);
+            PixelSpiTransferData(Blue[i]);
+            PixelSpiTransferData(Green[i]);
+            PixelSpiTransferData(Red[i]);
+        }
     }
     this->SendStopFrame();
 }
@@ -256,6 +275,36 @@ bool PixelLedClass::PixelStripMapSwap(uint8_t LedIndex1_, uint8_t LedIndex2_){
 }
 
 /**
+ * @brief 
+ * 
+ * @param Led_ 
+ * @return true 
+ * @return false 
+ */
+bool PixelLedClass::SetNthLedAsVirtual(uint8_t Led_){
+    if(Led_ > this->StripLength)
+        return true;
+    this->VirtualPtr[Led_] = true;
+    return 0;
+}
+
+/**
+ * @brief 
+ * 
+ * @param Leds_ 
+ * @param Size_ 
+ * @return true 
+ * @return false 
+ */
+bool PixelLedClass::SetLedsAsVirtual(uint8_t* Leds_, uint8_t Size_){
+    for(int i = 0; i < Size_; i++){
+        if(Leds_[i] > this -> StripLength)
+            return true;
+        this->VirtualPtr[Leds_[i]] = true;
+    }
+}
+
+/**
  * @brief Construct a new Pixel Strip Subset Class:: Pixel Strip Subset Class object
  * 
  */
@@ -343,23 +392,4 @@ void PixelStripSubsetClass::SetNthLedBrightness(uint8_t Brightness_){
     ;
 }
 
-void StartAnimation(PixelLedClass* PixelStrip_, uint8_t Red_, uint8_t Green_, uint8_t Blue_, uint8_t Brightness_, uint16_t Interval_){
-    uint8_t StripLength = PixelStrip_->GetStripLength();
-    for(int i = 0; i < StripLength/2; i++){
-        PixelStrip_->SetNthLedBuffer(((StripLength/2)-i-1), Red_, Green_, Blue_, Brightness_);
-        PixelStrip_->SetNthLedBuffer(((StripLength/2)+i), Red_, Green_, Blue_, Brightness_);
-        PixelStrip_->SendBuffersData();
-        PixelDelay(Interval_);
-    }
-}
-
-void IdleAnimation(PixelLedClass* PixelStrip_, uint8_t Red_, uint8_t Green_, uint8_t Blue_, uint8_t Brightness_, uint16_t Interval_){
-    uint8_t StripLength = PixelStrip_->GetStripLength();
-    for(int i = 0; i < StripLength/2; i++){
-        PixelStrip_->SetNthLedBuffer(((StripLength/2)-i-1), Red_, Green_, Blue_, Brightness_);
-        PixelStrip_->SetNthLedBuffer(((StripLength/2)+i), Red_, Green_, Blue_, Brightness_);
-        PixelStrip_->SendBuffersData();
-        PixelDelay(Interval_);
-    }
-}
 
