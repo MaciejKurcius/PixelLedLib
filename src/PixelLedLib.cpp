@@ -33,6 +33,8 @@ PixelLedClass::PixelLedClass(uint8_t StripLength_){
     Blue = new uint8_t[StripLength_];
     Brightness = new uint8_t [StripLength_];
     VirtualPtr = new bool [StripLength_];
+    for(int i = 0; i < this->StripLength; i++)
+        VirtualPtr[i] = false;
     PixelStripMapInit();
 }
 
@@ -49,6 +51,8 @@ PixelLedClass::PixelLedClass(uint8_t StripLength_, uint8_t VirtualLedLength_){
     Blue = new uint8_t[StripLength_ + VirtualLedLength_];
     Brightness = new uint8_t [StripLength_ + VirtualLedLength_];
     VirtualPtr = new bool [StripLength_ + VirtualLedLength_];
+    for(int i = 0; i < this->StripLength; i++)
+        VirtualPtr[i] = false;
     PixelStripMapInit();
 }
 
@@ -285,7 +289,7 @@ bool PixelLedClass::SetNthLedAsVirtual(uint8_t Led_){
     if(Led_ > this->StripLength)
         return true;
     this->VirtualPtr[Led_] = true;
-    return 0;
+    return false;
 }
 
 /**
@@ -302,6 +306,7 @@ bool PixelLedClass::SetLedsAsVirtual(uint8_t* Leds_, uint8_t Size_){
             return true;
         this->VirtualPtr[Leds_[i]] = true;
     }
+    return false;
 }
 
 /**
