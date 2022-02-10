@@ -24,15 +24,17 @@ PixelLedClass::PixelLedClass(){
 /**
  * @brief Construct a new Pixel Led Class:: Pixel Led Class object
  * 
- * @param StripLength_ 
+ * @param StripLength_ - quantity of physical leds in strip
+ * @param Instance_ - instance identifier of leds strip. If you want use a few strip with different SPI and different init actions. 
  */
-PixelLedClass::PixelLedClass(uint8_t StripLength_){
+PixelLedClass::PixelLedClass(uint8_t StripLength_, uint8_t Instance_){
     StripLength = StripLength_;
     Red = new uint8_t[StripLength_];
     Green = new uint8_t[StripLength_];
     Blue = new uint8_t[StripLength_];
     Brightness = new uint8_t [StripLength_];
     VirtualPtr = new bool [StripLength_];
+    Instance = Instance_;
     for(int i = 0; i < this->StripLength; i++)
         VirtualPtr[i] = false;
     PixelStripMapInit();
@@ -41,16 +43,18 @@ PixelLedClass::PixelLedClass(uint8_t StripLength_){
 /**
  * @brief Construct a new Pixel Led Class:: Pixel Led Class object
  * 
- * @param StripLength_ 
- * @param VirtualLedLength_ 
+ * @param StripLength_ - quantity of physical leds in strip
+ * @param VirtualLedLength_ - quantity of virtual leds in strip
+ * @param Instance_ - instance identifier of leds strip. If you want use a few strip with different SPI and different init actions. 
  */
-PixelLedClass::PixelLedClass(uint8_t StripLength_, uint8_t VirtualLedLength_){
+PixelLedClass::PixelLedClass(uint8_t StripLength_, uint8_t VirtualLedLength_, uint8_t Instance_){
     StripLength = StripLength_ + VirtualLedLength_;
     Red = new uint8_t[StripLength_ + VirtualLedLength_];
     Green = new uint8_t[StripLength_ + VirtualLedLength_];
     Blue = new uint8_t[StripLength_ + VirtualLedLength_];
     Brightness = new uint8_t [StripLength_ + VirtualLedLength_];
     VirtualPtr = new bool [StripLength_ + VirtualLedLength_];
+    Instance = Instance_;
     for(int i = 0; i < this->StripLength; i++)
         VirtualPtr[i] = false;
     PixelStripMapInit();
@@ -67,10 +71,13 @@ PixelLedClass::~PixelLedClass(){
 /**
  * @brief Function for init Pixel LED strip
  * 
- * @return uint8_t 
+ * @return true - if error
+ * @return false 
  */
-uint8_t PixelLedClass::Init(){
-    return PixelSpiInit() | PixelInitActions();
+bool PixelLedClass::Init(){
+    if(PixelSpiInit(this) || PixelInitActions(this))
+        return true;
+    return false;
 }
 
 /**

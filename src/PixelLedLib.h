@@ -13,18 +13,18 @@
 #define PixelLedLib_H
 #include <map>
 
-extern uint8_t PixelSpiInit(void);
-extern uint8_t PixelInitActions(void);
-extern void PixelSpiTransferData(uint8_t Data_);  
-extern void PixelDelay(uint16_t Time_);           //delay time in miliseconds
+extern uint8_t PixelSpiInit(PixelLedClass PixelStrip_);
+extern uint8_t PixelInitActions(PixelLedClass PixelStrip_);
+extern void PixelSpiTransferData(uint8_t DataToSend_);  
+extern void PixelDelay(uint16_t DelayTime_);           //delay time in miliseconds
 
 class PixelLedClass {
     public:
         PixelLedClass();
-        PixelLedClass(uint8_t StripLength_);
-        PixelLedClass(uint8_t StripLength_, uint8_t VirtualLedLength_);
+        PixelLedClass(uint8_t StripLength_, uint8_t Instance_);
+        PixelLedClass(uint8_t StripLength_, uint8_t VirtualLedLength_, uint8_t Instance_);
         ~PixelLedClass();
-        uint8_t Init();
+        bool Init();
         void SendStartFrame();
         void SendStopFrame();
         void SendBuffersData();
@@ -50,6 +50,7 @@ class PixelLedClass {
         uint8_t* Brightness;
         bool* VirtualPtr;
         std::map<uint8_t, uint8_t>PixelStripMap;
+        uint8_t Instance;
     protected:
     ;
 };
