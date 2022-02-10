@@ -77,7 +77,7 @@ class PixelStripSubsetClass {
 extern uint8_t PixelSpiInit(PixelLedClass* PixelStrip_);
 extern uint8_t PixelInitActions(PixelLedClass* PixelStrip_);
 extern void PixelSpiTransferData(PixelLedClass* PixelStrip_, uint8_t DataToSend_);  
-extern void PixelDelay(uint16_t DelayTime_);           //delay time in miliseconds
+extern void PixelDelay(uint32_t DelayTime_);           //delay time in miliseconds
 
 
 
