@@ -72,7 +72,7 @@ PixelLedClass::~PixelLedClass(){
  * @brief Function for init Pixel LED strip
  * 
  * @return true - if error
- * @return false 
+ * @return false - if ok
  */
 bool PixelLedClass::Init(){
     if(PixelSpiInit(this) || PixelInitActions(this))
