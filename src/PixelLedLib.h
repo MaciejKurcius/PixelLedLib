@@ -15,7 +15,7 @@
 
 extern uint8_t PixelSpiInit(PixelLedClass PixelStrip_);
 extern uint8_t PixelInitActions(PixelLedClass PixelStrip_);
-extern void PixelSpiTransferData(uint8_t DataToSend_);  
+extern void PixelSpiTransferData(PixelLedClass PixelStrip_, uint8_t DataToSend_);  
 extern void PixelDelay(uint16_t DelayTime_);           //delay time in miliseconds
 
 class PixelLedClass {
@@ -77,7 +77,6 @@ class PixelStripSubsetClass {
     uint8_t Length = 0;
 };
 
-void StartAnimation(PixelLedClass* PixelStrip_, uint8_t Red_, uint8_t Green_, uint8_t Blue_, uint8_t Brightness_, uint16_t Interval_);
 
 
 

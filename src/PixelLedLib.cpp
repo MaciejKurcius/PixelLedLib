@@ -86,7 +86,7 @@ bool PixelLedClass::Init(){
  */
 void PixelLedClass::SendStartFrame(){
     for(int i = 0; i < 4; i++)
-        PixelSpiTransferData(0x00);
+        PixelSpiTransferData(this, 0x00);
 }
 
 /**
@@ -96,7 +96,7 @@ void PixelLedClass::SendStartFrame(){
  */
 void PixelLedClass::SendStopFrame(){
     for(int i = 0; i < 4; i++)
-        PixelSpiTransferData(0xFF);
+        PixelSpiTransferData(this, 0xFF);
 }
 
 /**
@@ -107,10 +107,10 @@ void PixelLedClass::SendBuffersData(){
     this->SendStartFrame();
     for(int i = 0; i < StripLength; i++){
         if(VirtualPtr[i] == false){
-            PixelSpiTransferData(Brightness[i] | 0xE0);
-            PixelSpiTransferData(Blue[i]);
-            PixelSpiTransferData(Green[i]);
-            PixelSpiTransferData(Red[i]);
+            PixelSpiTransferData(this, Brightness[i] | 0xE0);
+            PixelSpiTransferData(this, Blue[i]);
+            PixelSpiTransferData(this, Green[i]);
+            PixelSpiTransferData(this, Red[i]);
         }
     }
     this->SendStopFrame();
