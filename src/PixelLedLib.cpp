@@ -317,6 +317,15 @@ bool PixelLedClass::SetLedsAsVirtual(uint8_t* Leds_, uint8_t Size_){
 }
 
 /**
+ * @brief 
+ * 
+ * @return uint8_t 
+ */
+uint8_t PixelLedClass::GetInstance(void){
+    return this->Instance;
+}
+
+/**
  * @brief Construct a new Pixel Strip Subset Class:: Pixel Strip Subset Class object
  * 
  */

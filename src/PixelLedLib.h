@@ -42,6 +42,7 @@ class PixelLedClass {
         bool PixelStripMapSwap(uint8_t LedIndex1_, uint8_t LedIndex2_);
         bool SetNthLedAsVirtual(uint8_t Led_);
         bool SetLedsAsVirtual(uint8_t* Leds_, uint8_t Size_);
+        uint8_t GetInstance(void);
     private:
         uint8_t StripLength;
         uint8_t* Red;
